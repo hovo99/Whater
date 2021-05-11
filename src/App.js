@@ -1,4 +1,4 @@
-import React,  {useState} from 'react';
+import React,  {useState, useEffect} from 'react';
 const api = {
   key: "de77bec278e1fde3630eb24739869bfe",
   base: "https://api.openweathermap.org/data/2.5/"
@@ -7,6 +7,26 @@ const api = {
 function App() {
   const [query, setQuery] = useState('');
   const [weather, setWeather] = useState('');
+
+
+  //save local storage start
+
+      useEffect( () => {
+        const getTodos = JSON.parse(localStorage.getItem('weather'))
+
+        if(getTodos){
+          setWeather(getTodos)
+        }
+      }, [])
+
+
+
+      useEffect(() => {
+        localStorage.setItem('weather', JSON.stringify(weather))
+      }, [weather])
+
+//save local storage end
+
   const search = evt => {
     if(evt.key === "Enter"){
       fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
@@ -63,7 +83,22 @@ function App() {
           </div>
         </div>
       </div>
-            ) : ('')}
+            ) : (
+                        <div>
+                        <div className="location-box">
+                        <div className="location">Erkri anvanum@</div>
+                        <div className="date">{dateBuilder(new Date())}</div>
+                        </div>
+                        <div className="weather-box">
+                        <div className="temp">
+                    jermastijan@ @st °c
+                        </div>
+                        <div className="weather">
+                            duq ays texter@ ktesneq arajin ev verjin angam
+                        </div>
+                        </div>
+                        </div>
+                )}
       </main>
     </div>
   );
